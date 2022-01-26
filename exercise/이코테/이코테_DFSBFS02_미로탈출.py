@@ -13,7 +13,7 @@ board = [
 ]
 
 visited = [[0] * col_num for _ in range(row_num)]
-distance = [[0] * col_num for _ in range(row_num)]
+distance = [[1] * col_num for _ in range(row_num)]
 
 d_row = [-1, 1, 0, 0]
 d_col = [0, 0, -1, 1]
