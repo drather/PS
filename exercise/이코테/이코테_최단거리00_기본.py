@@ -16,15 +16,12 @@ index       1   2   3   4   5   6
 distance    0   2   3   1   2   4
 """
 node_num, link_num = map(int, input().split())
-links = []
-
-for i in range(link_num):
-    links.append(list(map(int, input().split())))
+start_node = int(input())
 
 INF = 1e9
 
 
-def make_graph(num_of_node, link_array):
+def make_graph(num_of_node):
     """
     다음과 같은 형태의 그래프를 만든다.
         노드 번호   연결된 노드, 가중치
@@ -36,12 +33,14 @@ def make_graph(num_of_node, link_array):
         5           [(3, 1), (6, 2)]
         6           []
     :param num_of_node:
-    :param link_array:
     :return:
     """
+    g = [[] for _ in range(node_num+1)]
 
-    g = [[]]
+    for i in range(link_num):
+        source, target, weight = map(int, input().split())
 
+        g[source].append((target, weight))
 
     return g
 
@@ -66,26 +65,27 @@ def dijkstra(d, v):
 
         v[min_and_not_visited_node] = True
 
-        for j in graph[min_and_not_visited_node]:
-            target, weight = j[0], j[1]
+        for trg, wgt in graph[min_and_not_visited_node]:
+            new_distance = d[min_and_not_visited_node] + wgt
 
-            new_cost = d[min_and_not_visited_node] + weight
-
-            if new_cost < d[min_and_not_visited_node]:
-                d[target] = new_cost
+            if new_distance < d[trg]:
+                d[trg] = new_distance
 
 
 if __name__ == '__main__':
-    visited = [False] * node_num
-    distances = [1e9] * node_num
+    visited = [False] * (node_num+1)
+    distances = [1e9] * (node_num+1)
 
-    graph = make_graph(node_num, links)
+    graph = make_graph(node_num)
 
     # 시작 노드 설정
     # 시작 노드 방문 표시 및 거리 0 으로 초기화
-    start_node = 1
     visited[start_node] = True
     distances[start_node] = 0
+
+    for j in graph[start_node]:
+        target, weight = j[0], j[1]
+        distances[target] = weight
 
     dijkstra(distances, visited)
 
