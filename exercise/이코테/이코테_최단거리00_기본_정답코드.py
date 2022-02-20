@@ -29,12 +29,13 @@ def get_smallest_node():
     min_value = INF
     index = 0
 
-    # 1번부터 노드를 순회하면서, 최단거리가 가장 짧은 미방문 노드를 리턴한다.
+    # 1번부터 노드를 순회하면서, 최단거리가 가장 짧은 미방문 노드를 찾는다.
     for i in range(1, node_num + 1):
         if distances[i] < min_value and not visited[i]:
             min_value = distances[i]
             index = i
 
+    # 찾아낸 노드의 인덱스를 리턴한다.
     return index
 
 
