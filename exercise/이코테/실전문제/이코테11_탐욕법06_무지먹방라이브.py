@@ -18,22 +18,86 @@ https://programmers.co.kr/learn/courses/30/lessons/42891?language=python3
 네트워크 장애가 발생한 시간 K 초가 매개변수로 주어질 때
 몇 번 음식부터 다시 섭취하면 되는지 return 하도록 solution 함수를 완성하라.
 """
+import heapq
 
 
-def solution(food_times, k):
-    answer = 0
+def solution2(food_times, k):
+    pq = []
     length = len(food_times)
+    times_sum = 0
+    remain_time = k
 
-    start_idx = 0
-    next_idx = start_idx + 1
+    if sum(food_times) < k:
+        return -1
+
+    [heapq.heappush(pq, [ft, idx]) for idx, ft in enumerate(food_times, 1)]
+
+    while True:
+        print()
+        time, idx = heapq.heappop(pq)
+        required_time = time * length
+
+        print(f"length, time, idx: {length}, {time}, {idx}")
+        print(f"remain_time, required_time: {remain_time}, {required_time}")
+        print(f"remain_time - required_time: {remain_time - required_time}")
+
+        if remain_time - required_time < 0:
+            print("종료해야 할 반복 돌입")
+            answer_idx = idx
+            # for i in range(remain_time):
+            #     _, answer_idx = heapq.heappop(pq)
+            print(f"first_answer_idx: {answer_idx}")
+            while pq:
+                _, answer_idx = heapq.heappop(pq)
+                print(f"answer_idx: {answer_idx}")
+
+            return answer_idx
+
+        else:
+            for elem in pq:
+                elem[0] -= time
+                print(elem)
+
+            remain_time -= required_time
+            length -= 1
+
+            print(f"remain_time: {remain_time}")
 
 
+def solution1(food_times, k):
+    idx_time_arr = sorted([(idx, ft) for idx, ft in enumerate(food_times, 1)],
+                          key=lambda x: x[1])
+    print([v[1] for v in idx_time_arr])
 
+    for idx, food_time in idx_time_arr:
+        print(f"\tidx: {idx}")
+        print(f"\tfood_time: {food_time}")
+        print(f"\tk: {k}")
 
-    return answer
+        k -= food_time
+
+        print(f"\tk - food_time: {k}")
+        print()
+
+        if k < 0:
+            print("\t종료")
+            return idx
+
+    return -1
 
 
 if __name__ == '__main__':
-    input1 = ([3, 1, 2], 5)
-    result1 = 1
-    assert result1 == solution(*input1)
+    # inputs = [
+    #     ([3, 1, 2], 5),
+    #     ([4, 1, 3, 2], sum([4, 1, 3, 2])-1),
+    #     ([10, 9, 8, 7, 6, 5, 4, 3, 2, 1], 8),
+    #     ([1, 1, 1, 1, 1], 5),
+    #     ([10, 20, 30, 100, 50, 30, 2], 184)
+    # ]
+    # result1 = 1
+    #
+    # for i, j in enumerate(inputs, 1):
+    #     print("answer: ", solution1(*j))
+    #     print()
+
+    print(f"answer: {solution2([10, 20, 30, 100, 50, 30, 2], 184)}")
