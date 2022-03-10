@@ -3,3 +3,5 @@
 "abcabcdede"	8
 "abcabcabcabcdededededede"	14
 "xababcdcdababcdcd"	17
+"abab" 3
+"abcabc" 4
