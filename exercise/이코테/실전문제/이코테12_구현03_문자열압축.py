@@ -21,7 +21,11 @@
 
 
 def solution(s):
-    pass
+    stack = []
+    total_length = len(s)
+
+    print(total_length)
+
 
 
 if __name__ == '__main__':
@@ -36,5 +40,4 @@ if __name__ == '__main__':
 
     answers = [7, 9, 8, 14, 17]
 
-    for i in zip(s, answers):
-        print(solution(i))
+    print(solution("aabbaccc"))
