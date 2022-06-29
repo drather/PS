@@ -18,17 +18,72 @@
 압축할 문자열 s가 매개변수로 주어질 때,
 위에 설명한 방법으로 1개 이상 단위로 문자열을 잘라 압축하여 표현한 문자열 중 가장 짧은 것의 길이를 return 하도록 solution 함수를 완성해주세요.
 
+
+21:20 ~ 21:50 : 문제풀이
+21:50 ~ 22:20: 답지 보고 다시 풀기
+
+
 ==== solution ====
-1.
+1. 문자열을 쪼갤 단위를 나타내는 count 가 2부터 string 의 길이까지, 다음 과정을 반복한다.
+    1). 문자열을 count 단위로 쪼갠다.
+    2). 해당 원소들을 key 로, 출현 빈도 0을 value 로 갖는 딕셔너리를 만든다.
+    3). 만약, n 번째 원소와 n + 1 번째 원소가 값이 다를때까지,
+        값이 같으면 출현 빈도를 +1 한다.
+        다르면, n + 1 번째 원소부터 이후 원소들에 대해 위 과정을 시작한다.
+
+    4). 마지막 count 까지 1)~3) 과정을 수행한 뒤, 가장 작은 값을 정답으로 리턴한다.
+
+
 
 """
 
 
-def solution(s):
-    stack = []
-    total_length = len(s)
+def slice_by_count(num, string):
+    print(f"num: {num}, string: {string}")
+    sliced_string = []
+    answer_candidate = ''
+    continue_count = 1
 
-    print(total_length)
+    for i in range(0, len(string), num):
+        sub_string = string[i:i+num]
+        sliced_string.append(sub_string)
+
+    print(sliced_string)
+    frequencies = [1] * len(sliced_string)
+
+    for i in range(len(sliced_string) - 1):
+        if sliced_string[i] == sliced_string[i+1]:
+            continue_count += 1
+            print(f"{i} 번쨰와 {i+1} 원소 같음, continue_count = {continue_count}")
+        else:
+            if continue_count > 1:
+                answer_candidate += str(continue_count) + sliced_string[i]
+                continue_count = 1
+
+            else:
+                answer_candidate += sliced_string[i]
+            print(f"{i} 번쨰와 {i+1} 원소 다름, continue_count = {continue_count}, answer_candidate: {answer_candidate}")
+
+
+
+    return len(answer_candidate)
+
+
+def solution(input_string):
+    answer = len(input_string)
+
+    if len(input_string) == 1:
+        return 1
+
+    for i in range(2, len(input_string) // 2):
+        temp = slice_by_count(i, input_string)
+        print(f"temp: {temp}")
+        print()
+
+        if answer > temp:
+            answer = temp
+
+    return answer
 
 
 if __name__ == '__main__':
@@ -36,11 +91,10 @@ if __name__ == '__main__':
         "aabbaccc",
         "ababcdcdababcdcd",
         "abcabcdede",
-        "abcabcdede",
         "abcabcabcabcdededededede",
         "xababcdcdababcdcd"
     ]
 
     answers = [7, 9, 8, 14, 17]
 
-    print(solution("aabbaccc"))
+    print(solution("abcabcabcabcdededededede"))
